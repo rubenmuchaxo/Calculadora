@@ -13,7 +13,14 @@ namespace Calculadora.Controllers
             _logger = logger;
         }
 
+        [HttpGet] //opcional -> se não se especificar, escolhe sempre o Get
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost] //Quando o formulário for submetido em 'post', ele será acionado
+        public IActionResult Index(string botao)
         {
             return View();
         }
