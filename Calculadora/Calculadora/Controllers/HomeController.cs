@@ -23,8 +23,10 @@ namespace Calculadora.Controllers
         }
 
         [HttpPost] //Quando o formulário for submetido em 'post', ele será acionado
-        public IActionResult Index(string botao, string visor)
+        public IActionResult Index(string botao, string visor, string primeiroOperando, string operador)
         {
+           
+
             //testar valor do 'botao'
 
             switch (botao)
@@ -75,10 +77,22 @@ namespace Calculadora.Controllers
                     visor = "0";
                     break;
 
+                case "+":
+                case "-":
+                case "*":
+                case ":":
+                    primeiroOperando = visor;
+                    operador = botao;
+                    
+                    
+                    break;
+
             }
 
             //preparar os dados para serem enviados para a View
             ViewBag.Visor = visor;
+            ViewBag.PrimeiroOperando = primeiroOperando;
+            ViewBag.Operador = operador;
             return View();
         }
 
