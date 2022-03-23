@@ -23,9 +23,9 @@ namespace Calculadora.Controllers
         }
 
         [HttpPost] //Quando o formulário for submetido em 'post', ele será acionado
-        public IActionResult Index(string botao, string visor, string primeiroOperando, string operador)
+        public IActionResult Index(string botao, string visor, string primeiroOperando, string operador, string limpa)
         {
-           
+            
 
             //testar valor do 'botao'
 
@@ -43,13 +43,14 @@ namespace Calculadora.Controllers
                 case "0":
                     //pressionou um algarismo
                     //Sugestão -> Fazer de forma algébrica
-                    if (visor == "0")
+                    if (visor == "0" || limpa == "sim")
                     {
                         visor = botao;
                     }
                     else { 
                         visor += botao; 
                     }
+                    limpa = "nao";
                     break;
 
                 case ",":
@@ -75,15 +76,47 @@ namespace Calculadora.Controllers
 
                 case "C":
                     visor = "0";
+                    limpa = "sim";
+                    primeiroOperando = "";
+                    operador = "";
                     break;
 
                 case "+":
                 case "-":
-                case "*":
+                case "x":
                 case ":":
-                    primeiroOperando = visor;
-                    operador = botao;
-                    
+                    //pressionado um operador
+                    if (!string.IsNullOrEmpty(operador))
+                    {
+                        //fazer a operação
+                        double operandoUm = Convert.ToDouble(primeiroOperando.Replace(",","."));
+                        double operandoDois = Convert.ToDouble(visor.Replace(",","."));
+                        double result=0;
+                        switch (operador)
+                        {
+                            case "+":
+                                result = operandoUm + operandoDois;
+                                break;
+
+                            case "x":
+                                result = operandoUm * operandoDois;
+                                break;
+
+                            case "-":
+                                result = operandoUm - operandoDois;
+                                break;
+
+                            case ":":
+                                result = operandoUm / operandoDois;
+                                break;
+
+                        }
+                        visor = result + "";
+                    }
+                        primeiroOperando = visor;
+                        operador = botao;
+                        limpa = "sim";
+
                     
                     break;
 
@@ -93,6 +126,7 @@ namespace Calculadora.Controllers
             ViewBag.Visor = visor;
             ViewBag.PrimeiroOperando = primeiroOperando;
             ViewBag.Operador = operador;
+            ViewBag.Limpa = limpa;
             return View();
         }
 
