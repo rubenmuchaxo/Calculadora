@@ -99,6 +99,7 @@ namespace Calculadora.Controllers
                 case "-":
                 case "x":
                 case ":":
+                case "=":
                     //pressionado um operador
                     if (!string.IsNullOrEmpty(operador))
                     {
